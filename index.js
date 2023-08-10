@@ -66,6 +66,34 @@ app.get('/login', (req, res) => {
   res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify`);
 });
 
+
+app.post('/create-bot', async (req, res) => {
+  try {
+    const { userId, token, prefix } = req.body;
+    
+    // Aqui você pode validar as informações do usuário, por exemplo, verificando se ele é um usuário autenticado.
+
+    // Crie uma instância do bot usando a biblioteca aoi.js
+    const bot = new Aoijs.Bot({
+      token: token,
+      prefix: prefix
+    });
+
+    // Lógica para armazenar as informações do bot no banco de dados, associando ao usuário
+    // ...
+
+    // Inicie o bot
+    bot.onMessage();
+
+    // Responda ao usuário com sucesso
+    res.status(200).json({ message: 'Bot criado com sucesso!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao criar o bot.' });
+  }
+});
+
+
 app.get('/callback', async (req, res) => {
   const code = req.query.code;
 
