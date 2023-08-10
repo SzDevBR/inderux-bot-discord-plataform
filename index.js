@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const session = require('express-session');
+const mongoose = require('mongoose');
 
 const app = express();
 const PORT = 3000;
@@ -8,6 +9,22 @@ const CLIENT_ID = '1139276098987901002';
 const CLIENT_SECRET = 'Gwe-8hs9vSZAaGpc_0dGHPlTmJSpcbCG';
 const REDIRECT_URI = 'http://nxbot.onrender.com/callback';
 const SESSION_SECRET = 'UmaChaveSecretaMuitoComplexa123!@#';
+
+const app = express();
+const PORT = 3000;
+const MONGODB_URI = 'mongodb+srv://inderux:inderux@cluster0.yuzl0.mongodb.net/?retryWrites=true&w=majority'; // Altere a URI para sua configuração
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const clientSchema = new mongoose.Schema({
+  name: String,
+  description: String,
+  userId: String, // ID do usuário do Discord
+  commands: [{ name: String, content: String }],
+  variables: [{ name: String, content: String }]
+});
+
+const Client = mongoose.model('Client', clientSchema);
 
 app.use(session({
   secret: SESSION_SECRET,
